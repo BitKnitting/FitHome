@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 import 'dart:ui';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'dart:math';
+import 'impact_images.dart';
+import 'energy_plot.dart';
 //import 'package:cached_network_image/cached_network_image.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -11,73 +13,20 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-   @override
-  // void initState() {
-  //   super.initState();
-  //   _getURLs();
-  //   precacheImage(NetworkImage('http'),context);
-  // }
-  // Grab URLs that go to unsplash photos of the impact categories.
-  void _getURLs() {
-
-  }
-  int _impactCategory;
-  static const int TREES = 3302326;
-  static const int OIL = 3947516;
-  static const int MONEY = 2364459;
-  // the _currentImpact is an unsplash collection id for a collection of:
-  // forest (3302326)
-  // oil (3947516) // money (2364459)
-  // Get an image from unsplash that is for one of the impact categories.
-  String _getImpactImageURL() {
-// mapImpactType is a dictionary where the key is the unsplash
-// collection id and the value is the number of images in the
-// trees (3302326)
-// oil (3947516)
-// money (2364459)
-// These images provide the backdrop for the impact section of
-// the dashboard.
-
-    var mapImpactType = {TREES: 264, OIL: 18, MONEY: 22};
-    _impactCategory = mapImpactType.keys
-        .elementAt(new Random().nextInt(mapImpactType.length));
-    int numImages = mapImpactType[_impactCategory];
-
-    Random rnd = Random();
-    int randomImage = 1 + rnd.nextInt(numImages);
-    return ("https://source.unsplash.com/collection/" +
-        _impactCategory.toString() +
-        "/540x960?/sig=" +
-        randomImage.toString());
-  }
-
-  // use network cache when getting images from unsplash.
-  // Widget _backgroundImpactImage() {
-  //   _getImpactImages();
-  //   return CachedNetworkImage(
-  //     //placeholder:CircularProgressIndicator(),
-  //     imageUrl: urlStrings[_selectedImageIndex],
-  //   );
-  // }
+  String currentImage;
 //
-// The image that the user sees as the background of the Dashboard.
+// The image the user sees as the background of the Dashboard.
 // It should invoke a positive emotion about saving electricity and
 // be a reminder of an aspect of the environment - trees, oil, money.
 // The images come from unsplash categories for trees, oil, money.
 //
   Widget _impactBackground() {
-    String urlString = _getImpactImageURL();
-// TODO: Several times when I click the FAB to get a new
-// image, nothing happens.  I don't know if there is an error
-// or what else might have happened.
-//
-// TODO: Many times loading the image takes too much time for a
-// responsive app.  I do not understand lazy loading of images and
-// how to apply that here.
-
+    Random rnd = Random();
+    currentImage =
+        ImpactImages.impactURLs[rnd.nextInt(ImpactImages.impactURLs.length)];
     return FadeInImage.memoryNetwork(
       placeholder: kTransparentImage,
-      image: urlString,
+      image: currentImage,
       fit: BoxFit.fill,
       width: double.infinity, //add this
       height: double.infinity,
@@ -91,7 +40,7 @@ class _DashboardPageState extends State<DashboardPage> {
 //
 // The Floating Action button is displayed on the bottom right of the
 // Dashboard. When the user taps on the FAB, a new impact background and
-// impact card are displayed.
+// cards are displayed.
 //
   Widget _floatingActionButton() {
     return Positioned(
@@ -107,49 +56,7 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-//
-// The impact card sits on top of the impact background and gives the
-// user info on their impact relative to which background is showing, e.g.:
-// if trees are showing, the equivalent number of trees planted is shown.
-// There are three pieces of info:
-// - The percentage of electricity the user is currently saving relative to
-//   the amount of electricity they were using before they starting practicing
-//   saving energy.
-// - The impact the user is making in equivalent trees, money saved, or barrels
-//   of oil not used.  Which one depends on which background image is being shown.
-// - The user's leaderboard ranking.
-//
-//
-// TODO: Load after the background image has loaded.
-// TODO: Get rid of _linePlotCard and just use _frostedCard w/
-// parameter for height (the only difference).
-  Widget _impactCard(Widget child) {
-// Using the Column for placement in the center.
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 182.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          // Frosted rectangle with curved corners.
-          ClipRRect(
-            borderRadius: BorderRadius.circular(24.0),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-              child: Container(
-                height: MediaQuery.of(context).size.height / 8,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.white.withOpacity(.3),
-                child: child,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _impactContent() {
-    // TODO: put the content together for the impact card.
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       mainAxisSize: MainAxisSize.max,
@@ -191,22 +98,18 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget _impactEquivalent(int amount) {
     String _assetString;
     String _textString;
-    switch (_impactCategory) {
-      case TREES:
-        _assetString = 'assets/' + TREES.toString() + '.png';
-        _textString = amount.toString() + ' trees';
-        break;
-      case OIL:
-        _assetString = 'assets/' + OIL.toString() + '.png';
-        _textString = amount.toString() + ' barrels';
-        break;
-      case MONEY:
-        _assetString = 'assets/' + MONEY.toString() + '.png';
-        _textString = '\$' + amount.toString();
-        break;
-      default:
-        break;
+    // The category is in the URL being used.
+    if (currentImage.contains(ImpactImages.TREES.toString())) {
+      _assetString = 'assets/' + ImpactImages.TREES.toString() + '.png';
+      _textString = amount.toString() + ' trees';
+    } else if (currentImage.contains(ImpactImages.OIL.toString())) {
+      _assetString = 'assets/' + ImpactImages.OIL.toString() + '.png';
+      _textString = amount.toString() + ' barrels';
+    } else {
+      _assetString = 'assets/' + ImpactImages.MONEY.toString() + '.png';
+      _textString = '\$' + amount.toString();
     }
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -265,19 +168,6 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget _impactLinePlot() {
-    // TODO: Build the line plot.
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Text("TBD"),
-      ],
-    );
-  }
-
-// TODO: Line plot of current electricity use.
 // The line plot has two plot lines.  Both our
 // measurements of watts/time.
 // - The baseline - this is a constant value we
@@ -285,10 +175,23 @@ class _DashboardPageState extends State<DashboardPage> {
 //   before the user started conserving.
 // - The current - this is the current watts reading.  We
 //   update this when there is a new value.
-  Widget _linePlotCard(Widget child) {
-// Using the Column for placement in the center.
+  Widget _impactLinePlot() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        EnergyPlot(),
+      ],
+    );
+  }
+
+//
+// Card holding Dashboard information.
+//
+  Widget _frostedCard(Widget child, double bottom) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 1.0),
+      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, bottom),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
@@ -315,8 +218,8 @@ class _DashboardPageState extends State<DashboardPage> {
     return Stack(
       children: <Widget>[
         _impactBackground(),
-        _impactCard(_impactContent()),
-        _linePlotCard(_impactLinePlot()),
+        _frostedCard(_impactContent(), 182.0),
+        _frostedCard(_impactLinePlot(), 1.0),
         _floatingActionButton(),
       ],
     );

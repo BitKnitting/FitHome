@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dashboard.dart';
+import 'dashboard/dashboard.dart';
 import 'activities.dart';
 import 'leaderboard.dart';
 import 'contactus.dart';
