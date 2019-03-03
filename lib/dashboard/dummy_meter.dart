@@ -2,21 +2,23 @@
 // This class extends the MeterReading class to support emulating
 // sensor data.  This is for development and testing.
 //
-import 'meter.dart';
 import 'dart:async';
 import 'dart:math';
+import 'energy_data_structure.dart';
 
-class DummyMeter extends Meter {
+class DummyMeter {
   Timer _timer;
-    int sampleTime=2;
-  DummyMeter({this.sampleTime});
+  int sampleTime;
+  DummyMeter(int sampleTime) {
+    this.sampleTime =sampleTime;
+  }
+  StreamController<EnergyReading> controller;
 
   void start() {
-    _timer = Timer.periodic(Duration(seconds: sampleTime), _timerCallBack);
+    _timer = Timer.periodic(Duration(seconds: this.sampleTime), _timerCallBack);
   }
 
   void stop() {
-    super.stop();
     _timer.cancel();
   }
 
@@ -27,6 +29,6 @@ class DummyMeter extends Meter {
   void _putEnergyReadingIntoStream() {
     Random rnd = Random();
     EnergyReading reading = EnergyReading(rnd.nextInt(1500), DateTime.now());
-    Meter.meterStreamController.add(reading);
+    controller.add(reading);
   }
 }

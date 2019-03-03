@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
-import 'package:transparent_image/transparent_image.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'dart:math';
+import 'package:transparent_image/transparent_image.dart';
 import 'impact_images.dart';
 import 'energy_plot.dart';
-//import 'package:cached_network_image/cached_network_image.dart';
+import 'impact_content.dart';
+import 'dart:ui';
 
 class DashboardPage extends StatefulWidget {
   @override
@@ -13,31 +12,105 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  // Prime the image cache with the images that will
+  // be displayed in the background.
+  ImpactImages impactImages; // Gets initialized in didChangeDependencies().
+  @override
+  initState() {
+    super.initState();
+
+    // Get images from unsplash that we'll use to display related to impact
+    // equivalencies such as money, trees planted, oil barrels not used.
+    ImpactImages impactImages = ImpactImages(100.0, 500.0);
+    impactImages.impactURLs.forEach((f) => print(f));
+  }
+
+  // Precache is called here because of the error message when in initState:
+  // initialization based on inherited widgets can be placed in the
+  // didChangeDependencies method, which is called after initState and
+  // whenever the dependencies change thereafter.
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    var height = MediaQuery.of(context).size.height;
+    print('the screen height is $height');
+    var width = MediaQuery.of(context).size.width;
+    print('the screen width is $width');
+    impactImages = ImpactImages(width, height);
+    impactImages.impactURLs.forEach(
+        (urlString) => precacheImage(NetworkImage(urlString), context));
+  }
+
   String currentImage;
-//
-// The image the user sees as the background of the Dashboard.
-// It should invoke a positive emotion about saving electricity and
-// be a reminder of an aspect of the environment - trees, oil, money.
-// The images come from unsplash categories for trees, oil, money.
-//
-  Widget _impactBackground() {
-    Random rnd = Random();
-    currentImage =
-        ImpactImages.impactURLs[rnd.nextInt(ImpactImages.impactURLs.length)];
-    return FadeInImage.memoryNetwork(
-      placeholder: kTransparentImage,
-      image: currentImage,
-      fit: BoxFit.fill,
-      width: double.infinity, //add this
-      height: double.infinity,
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        ////////
+        Column(
+          children: <Widget>[
+            //////
+            Expanded(
+              child: _impactImage(),
+            ),
+            //////
+            _electricityPlot(),
+          ],
+        ),
+        /////////
+        Positioned(
+          child: _frostedCard(impactContent(currentImage),
+              MediaQuery.of(context).size.height / 7, 182.0, .6),
+        ),
+        ////////
+        _floatingActionButton(),
+      ],
     );
   }
 
-  void _updateImpacts() {
-    setState(() {});
+// The image invokes a positive emotion about saving electricity and
+// be a reminder of an aspect of the environment - trees, oil, money.
+// The images come from unsplash categories for trees, oil, money.
+//
+// TODO: FIX Image does not appear on Android emulator.
+//
+  Widget _impactImage() {
+    Random rnd = Random();
+    List<String> placeholderAssets = _getPlaceholderAssets();
+    String placeholderAsset =
+        placeholderAssets[rnd.nextInt(placeholderAssets.length)];
+    ;
+    currentImage =
+        impactImages.impactURLs[rnd.nextInt(impactImages.impactURLs.length)];
+    try {
+      return FadeInImage.assetNetwork(
+        placeholder: placeholderAsset,
+        image: currentImage,
+        fit: BoxFit.fill,
+        width: double.infinity,
+      );
+    } catch (e) {
+      print('Error loading image: $e');
+      return Container(child: Center(child: Text('no image.')));
+    }
   }
 
 //
+// Add the local images to help with performance when loading
+// the network images.
+//
+  List<String> _getPlaceholderAssets() {
+    const List<String> placeholderAssets = [
+      'assets/impactImages/3302326_tree_1_shrunk.jpg',
+      'assets/impactImages/3302326_tree_2_shrunk.jpg',
+      'assets/impactImages/3302326_tree_3_shrunk.jpg',
+      'assets/impactImages/3947516_oil_1_shrunk.jpg',
+      'assets/impactImages/3947516_oil_2_shrunk.jpg',
+    ];
+
+    return placeholderAssets;
+  }
+
 // The Floating Action button is displayed on the bottom right of the
 // Dashboard. When the user taps on the FAB, a new impact background and
 // cards are displayed.
@@ -56,140 +129,27 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget _impactContent() {
+  void _updateImpacts() {
+    setState(() {});
+  }
+
+  Widget _electricityPlot() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        // TODO: Figure out from the energy meter/datastore
-        // how much electricity has been saved.
-        _electricitySaved(10),
-        // TODO: figuring out and passing the impact amount.
-        _impactEquivalent(54),
-        // TODO: Figure out from datastore what
-        // ranking user is at for different leaderboard
-        // lists.
-        _leaderboardRanking(),
-      ],
-    );
-  }
-
-  Widget _electricitySaved(int percentage) {
-    return CircularPercentIndicator(
-      radius: 50.0,
-      lineWidth: 8.0,
-      animation: true,
-      percent: percentage.toDouble() / 15.0,
-      animateFromLastPercent: true,
-      center: new Text(
-        percentage.toString() + '%',
-        style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
-      ),
-      footer: new Text(
-        "Less",
-        style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
-      ),
-      circularStrokeCap: CircularStrokeCap.round,
-      progressColor: Colors.green,
-    );
-  }
-
-  Widget _impactEquivalent(int amount) {
-    String _assetString;
-    String _textString;
-    // The category is in the URL being used.
-    if (currentImage.contains(ImpactImages.TREES.toString())) {
-      _assetString = 'assets/' + ImpactImages.TREES.toString() + '.png';
-      _textString = amount.toString() + ' trees';
-    } else if (currentImage.contains(ImpactImages.OIL.toString())) {
-      _assetString = 'assets/' + ImpactImages.OIL.toString() + '.png';
-      _textString = amount.toString() + ' barrels';
-    } else {
-      _assetString = 'assets/' + ImpactImages.MONEY.toString() + '.png';
-      _textString = '\$' + amount.toString();
-    }
-
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Image.asset(_assetString),
-        Text(
-          _textString,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20.0,
-          ),
+        SizedBox(
+          child: EnergyPlot(),
+          height: MediaQuery.of(context).size.height / 5,
+          width: MediaQuery.of(context).size.width,
         ),
       ],
-//
     );
   }
 
-  Widget _leaderboardRanking() {
-    return SizedBox(
-      width: 100.0,
-      height: 80.0,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Text(
-            'Rank',
-            style: TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          Text(
-            'Local: 55',
-            style: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            'State: 103',
-            style: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            'Overall: 230',
-            style: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-// The line plot has two plot lines.  Both our
-// measurements of watts/time.
-// - The baseline - this is a constant value we
-//   got measuring how much electricity was being used
-//   before the user started conserving.
-// - The current - this is the current watts reading.  We
-//   update this when there is a new value.
-  Widget _impactLinePlot() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        EnergyPlot(),
-      ],
-    );
-  }
-
-//
-// Card holding Dashboard information.
-//
-  Widget _frostedCard(Widget child, double bottom) {
+  Widget _frostedCard(
+      Widget child, double height, double bottom, double opacity) {
     return Padding(
       padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, bottom),
       child: Column(
@@ -201,27 +161,15 @@ class _DashboardPageState extends State<DashboardPage> {
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
               child: Container(
-                height: MediaQuery.of(context).size.height / 5,
+                height: height,
                 width: MediaQuery.of(context).size.width,
-                color: Colors.white.withOpacity(.3),
+                color: Colors.white.withOpacity(opacity),
                 child: child,
               ),
             ),
           ),
         ],
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        _impactBackground(),
-        _frostedCard(_impactContent(), 182.0),
-        _frostedCard(_impactLinePlot(), 1.0),
-        _floatingActionButton(),
-      ],
     );
   }
 }

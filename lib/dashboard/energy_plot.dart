@@ -1,11 +1,10 @@
 //
-// A widget that builds a timeseries plot of energy readings and the baseline reading.
-// The widget should be put into a container.
-// TODO: Baseline plot overlaid on energy plot.
+// A widget that builds a timeseries plot of energy readings.
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'meter.dart';
-import 'dummy_meter.dart';
+import 'dart:async';
+import 'meter_stream.dart';
+import 'energy_data_structure.dart';
 
 class EnergyPlot extends StatefulWidget {
   @override
@@ -13,36 +12,40 @@ class EnergyPlot extends StatefulWidget {
 }
 
 class _EnergyPlotState extends State<EnergyPlot> {
-  // Sets up the meter reading stream where incoming meter readings
-  // are emulated.
-  DummyMeter meter = DummyMeter(sampleTime: 2);
   List<EnergyReading> energyReadings = [];
   Widget energyLine;
   var series;
+  StreamSubscription<EnergyReading> readingSubscription;
 
+  @override
+  void dispose() {
+    super.dispose();
+    readingSubscription.cancel();
+
+  }
   @override
   void initState() {
     super.initState();
-    // Set up a callback to handle meter readings as they come in.
-    // Update the widget's state with the new data.
-    Meter.meterStreamController.stream.listen((reading) => setState(() {
-          energyReadings.add(reading);
-          // Plot 10 readings.
-          if (energyReadings.length > 10) {
-            energyReadings.removeAt(0);
-          }
-        }));
-    meter.start();
+    // Listen to the stream of incoming meter readings.   
+    Stream<EnergyReading> readingStream = readings();
+    readingSubscription = readingStream.listen(
+      (reading) => setState(
+            () {
+              // Add the reading to the List that gets plotted.
+              energyReadings.add(reading);
+              // Plot 10 readings.
+              if (energyReadings.length > 10) {
+                energyReadings.removeAt(0);
+              }
+            },
+          ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     _buildXY();
-    return SizedBox(
-      child: energyLine,
-      width: 400.0,
-      height: 300.0,
-    );
+    return energyLine;
   }
 
   //

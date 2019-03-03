@@ -5,36 +5,48 @@
 // are images that are then displayed as background images.
 //
 import 'dart:math';
+
 // TODO: On many clicks, image does not update.  However, the URL
 // has updated.  Is there a way to determine if an error occured
 // when loading an image to the screen?
+//
+// The image the user sees as the background of the Dashboard.
+// It should invoke a positive emotion about saving electricity and
+// be a reminder of an aspect of the environment - trees, oil, money.
+// The images come from unsplash categories for trees, oil, money.
+//
 class ImpactImages {
-  static int numImages = 10;
-  // The unsplash collection id for the impact category:
+  static final ImpactImages _singleton = ImpactImages._internal();
+  //   The unsplash collection id for the impact category:
   // forest (3302326)
   // oil (3947516)
   // money (2364459)
   static const int TREES = 3302326;
   static const int OIL = 3947516;
   static const int MONEY = 2364459;
-  // Get URLs from unsplash that are relevant to our
-  // impact categories.
+
+  static int width;
+  static int height;
   static List<String> _impactURLs = List<String>();
-  static List<String> get impactURLs {
+  List<String> get impactURLs {
+    return _impactURLs;
+  }
+
+  factory ImpactImages(double w, double h) {
+    width = w.toInt() + 200; // w/o 200, image looks stretched...
+    height = h.toInt();
+    return _singleton;
+  }
+
+  ImpactImages._internal() {
+    int numImages = 20;
     numImages = numImages < 0 ? 10 : numImages > 30 ? 10 : numImages;
-    // Check to see if the impact URLs already exist and the list contains
-    // The expected number of URLs.
-    if (_impactURLs.length == numImages) {
-      return _impactURLs;
-    } else if (_impactURLs.length > 0) {
-      _impactURLs.clear();
-    }
     // Set up the number of images that are in each category.
     Map mapNumImagesPerType = {TREES: 264, OIL: 18, MONEY: 22};
     // Get the URL strings.
     int i = 0;
     while (i < numImages) {
-      // Randomely select one of the three categories
+      //Randomly select one of the three categories
       int _impactCategory = mapNumImagesPerType.keys
           .elementAt(new Random().nextInt(mapNumImagesPerType.length));
       // Pick a random image and build the URL.
@@ -43,7 +55,11 @@ class ImpactImages {
       int randomImage = 1 + rnd.nextInt(numImages);
       String unsplashURL = "https://source.unsplash.com/collection/" +
           _impactCategory.toString() +
-          "/540x960?/sig=" +
+          "/" +
+          width.toString() +
+          "x" +
+          height.toString() +
+          "?/sig=" +
           randomImage.toString();
       // Make sure the URL we built is unique.
       if (i == 0) {
@@ -61,8 +77,7 @@ class ImpactImages {
           _impactURLs.add(unsplashURL);
           i++;
         }
-      }
-    }
-    return _impactURLs;
-  }
-}
+      } // else
+    } // while
+  } //_internal
+} // class ImpactImages

@@ -48,8 +48,11 @@ flutter:
     - assets/3302326.png
     - assets/3947516.png
     - assets/2364459.png
-
-
+    - assets/impactImages/3302326_tree_1_shrunk.jpg
+    - assets/impactImages/3302326_tree_2_shrunk.jpg
+    - assets/impactImages/3302326_tree_3_shrunk.jpg
+    - assets/impactImages/3947516_oil_1_shrunk.jpg
+    - assets/impactImages/3947516_oil_2_shrunk.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
 
