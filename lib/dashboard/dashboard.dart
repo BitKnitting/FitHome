@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'package:transparent_image/transparent_image.dart';
 import 'impact_images.dart';
 import 'energy_plot.dart';
 import 'impact_content.dart';
@@ -79,7 +78,6 @@ class _DashboardPageState extends State<DashboardPage> {
     List<String> placeholderAssets = _getPlaceholderAssets();
     String placeholderAsset =
         placeholderAssets[rnd.nextInt(placeholderAssets.length)];
-    ;
     currentImage =
         impactImages.impactURLs[rnd.nextInt(impactImages.impactURLs.length)];
     try {
