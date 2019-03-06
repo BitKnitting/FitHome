@@ -6,7 +6,7 @@
 //
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'impact_images.dart';
+
 
 Widget impactContent(String currentImageURL) {
   return Row(
@@ -50,14 +50,14 @@ Widget impactContent(String currentImageURL) {
     String _assetString;
     String _textString;
     // The category is in the URL being used.
-    if (currentImage.contains(ImpactImages.TREES.toString())) {
-      _assetString = 'assets/' + ImpactImages.TREES.toString() + '.png';
+    if (currentImage.contains('tree')) {
+      _assetString = 'assets/tree.png';
       _textString = amount.toString() + ' trees';
-    } else if (currentImage.contains(ImpactImages.OIL.toString())) {
-      _assetString = 'assets/' + ImpactImages.OIL.toString() + '.png';
+    } else if (currentImage.contains('oil')) {
+      _assetString = 'assets/oil.png';
       _textString = amount.toString() + ' barrels';
     } else {
-      _assetString = 'assets/' + ImpactImages.MONEY.toString() + '.png';
+      _assetString = 'assets/money.png';
       _textString = '\$' + amount.toString();
     }
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'impact_images.dart';
 import 'energy_plot.dart';
 import 'impact_content.dart';
 import 'dart:ui';
@@ -11,33 +10,13 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  // Prime the image cache with the images that will
-  // be displayed in the background.
-  ImpactImages impactImages; // Gets initialized in didChangeDependencies().
+  List<String> _impactImages;
+
   @override
   initState() {
     super.initState();
 
-    // Get images from unsplash that we'll use to display related to impact
-    // equivalencies such as money, trees planted, oil barrels not used.
-    ImpactImages impactImages = ImpactImages(100.0, 500.0);
-    impactImages.impactURLs.forEach((f) => print(f));
-  }
-
-  // Precache is called here because of the error message when in initState:
-  // initialization based on inherited widgets can be placed in the
-  // didChangeDependencies method, which is called after initState and
-  // whenever the dependencies change thereafter.
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    var height = MediaQuery.of(context).size.height;
-    print('the screen height is $height');
-    var width = MediaQuery.of(context).size.width;
-    print('the screen width is $width');
-    impactImages = ImpactImages(width, height);
-    impactImages.impactURLs.forEach(
-        (urlString) => precacheImage(NetworkImage(urlString), context));
+    _impactImages = _getImpactImages();
   }
 
   String currentImage;
@@ -50,7 +29,7 @@ class _DashboardPageState extends State<DashboardPage> {
           children: <Widget>[
             //////
             Expanded(
-              child: _impactImage(),
+              child: _impactImage(_impactImages),
             ),
             //////
             _electricityPlot(),
@@ -58,8 +37,11 @@ class _DashboardPageState extends State<DashboardPage> {
         ),
         /////////
         Positioned(
-          child: _frostedCard(impactContent(currentImage),
-              MediaQuery.of(context).size.height / 7, 182.0, .6),
+          child: _frostedCard(
+              impactContent(currentImage),
+              MediaQuery.of(context).size.height / 7,
+              35 + MediaQuery.of(context).size.height / 7,
+              .6),
         ),
         ////////
         _floatingActionButton(),
@@ -71,42 +53,26 @@ class _DashboardPageState extends State<DashboardPage> {
 // be a reminder of an aspect of the environment - trees, oil, money.
 // The images come from unsplash categories for trees, oil, money.
 //
-// TODO: FIX Image does not appear on Android emulator.
 //
-  Widget _impactImage() {
+  Widget _impactImage(List<String> _impactImages) {
     Random rnd = Random();
-    List<String> placeholderAssets = _getPlaceholderAssets();
-    String placeholderAsset =
-        placeholderAssets[rnd.nextInt(placeholderAssets.length)];
-    currentImage =
-        impactImages.impactURLs[rnd.nextInt(impactImages.impactURLs.length)];
+
+    currentImage = _impactImages[rnd.nextInt(_impactImages.length)];
     try {
-      return FadeInImage.assetNetwork(
-        placeholder: placeholderAsset,
-        image: currentImage,
-        fit: BoxFit.fill,
-        width: double.infinity,
+      return Row(
+        children: <Widget>[
+          Expanded(
+            child: Image.asset(
+              currentImage,
+              fit: BoxFit.fill,
+            ),
+          ),
+        ],
       );
     } catch (e) {
       print('Error loading image: $e');
       return Container(child: Center(child: Text('no image.')));
     }
-  }
-
-//
-// Add the local images to help with performance when loading
-// the network images.
-//
-  List<String> _getPlaceholderAssets() {
-    const List<String> placeholderAssets = [
-      'assets/impactImages/3302326_tree_1_shrunk.jpg',
-      'assets/impactImages/3302326_tree_2_shrunk.jpg',
-      'assets/impactImages/3302326_tree_3_shrunk.jpg',
-      'assets/impactImages/3947516_oil_1_shrunk.jpg',
-      'assets/impactImages/3947516_oil_2_shrunk.jpg',
-    ];
-
-    return placeholderAssets;
   }
 
 // The Floating Action button is displayed on the bottom right of the
@@ -169,5 +135,23 @@ class _DashboardPageState extends State<DashboardPage> {
         ],
       ),
     );
+  }
+
+  // Prime the image cache with the images that will
+  // be displayed in the background.
+  List<String> _getImpactImages() {
+    const List<String> _impactImages = [
+      'assets/impactImages/oil_1.jpeg',
+      'assets/impactImages/oil_2.jpeg',
+      'assets/impactImages/oil_3.jpeg',
+      'assets/impactImages/tree_1.jpeg',
+      'assets/impactImages/tree_2.jpeg',
+      'assets/impactImages/tree_3.jpeg',
+      'assets/impactImages/money_1.jpeg',
+      'assets/impactImages/money_2.jpeg',
+      'assets/impactImages/money_3.jpeg',
+    ];
+
+    return _impactImages;
   }
 }

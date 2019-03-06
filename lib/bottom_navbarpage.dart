@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dashboard/dashboard.dart';
-import 'activities.dart';
+import 'ToDos/ToDos.dart';
 import 'leaderboard.dart';
 import 'contactus.dart';
 
@@ -13,11 +13,11 @@ class BottomNavBarPage extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBarPage> {
-  // which screen is currently being displayed - Dashboard, Activities...
+  // which screen is currently being displayed - Dashboard, ToDo...
   int _currentPage = 0;
   final List<Widget> _pages = [
     DashboardPage(),
-    ActivitiesPage(),
+    ToDoPage(),
     LeaderboardPage(),
     ContactUsPage()
   ];
@@ -25,9 +25,9 @@ class _BottomNavBarState extends State<BottomNavBarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      // appBar: AppBar(
+      //   title: Text(widget.title),
+      // ),
       body: SafeArea(
         child: _pages[_currentPage],
       ),
@@ -42,7 +42,7 @@ class _BottomNavBarState extends State<BottomNavBarPage> {
           ),
           BottomNavigationBarItem(
             icon: new Icon(Icons.star),
-            title: new Text('Activities'),
+            title: new Text('To Dos'),
           ),
           BottomNavigationBarItem(
             icon: new Icon(Icons.format_align_justify),
