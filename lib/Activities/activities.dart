@@ -1,22 +1,11 @@
 import 'package:flutter/material.dart';
-import 'ToDo_model.dart';
 
-class ToDoPage extends StatelessWidget {
-  @override
-  // The ToDo page has two tabs.  One for Active ToDos
-  // and one for completed ToDos.
-  // The highest level being built is the two tabs.
-  Widget build(BuildContext context) {
-    return ActiveAndCompletedToDos();
-  }
-}
-
-class ActiveAndCompletedToDos extends StatefulWidget {
+class ActivitiesPage extends StatefulWidget {
   @override
   _State createState() => _State();
 }
 
-class _State extends State<ActiveAndCompletedToDos> {
+class _State extends State<ActivitiesPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -50,21 +39,6 @@ class _State extends State<ActiveAndCompletedToDos> {
 
   // Return the cards for either the active or completed tabs.
   Widget _listViewOfToDos() {
-    print('********');
-    _makeListView();
     return Container(child: Text('hello'));
-  }
-
-  _makeListView() async {
-    print("***************");
-    Map toDos = await loadToDos();
-    toDos.forEach((k, v) {
-      print('-----> $v');
-
-//      print('Key: $k, Value: $v');
-//      print(toDos[v]);
-    });
-
-    //print(toDos['ToDos'][0]);
   }
 }

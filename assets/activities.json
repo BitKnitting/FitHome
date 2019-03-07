@@ -1,0 +1,64 @@
+{
+    "activities": [
+        {
+            "name": "power_strip",
+            "icon": "power",
+            "tip": "Many devices are always on, but used for only a few hours.  Put them on programmable power supplies.",
+            "hint": "For example, your TV, DVD, cable box are most likely used during the same hours and are located close together",
+            "checklist": [
+                {
+                    "todo": "Look for places that have a collection of always on devices plugged in. ",
+                    "url": "https://www.takecontrolandsave.coop/documents/PhantomLoad.pdf"
+                },
+                {
+                    "todo": "Buy programmable Power Strips.",
+                    "url": ""
+                },
+                {
+                    "todo": "START SAVING: Program the power strips, plug the devices into it, plug the power strip into the wall plug and start saving!",
+                    "url": ""
+                }
+            ]
+        },
+        {
+            "name": "audit",
+            "icon": "clipboard",
+            "tip": "A home energy audit will give you A LOT of info on saving energy as well as free LED lightbulbs if needed!",
+            "hint": "",
+            "Checklist": [
+                {
+                    "todo": "One",
+                    "url": ""
+                },
+                {
+                    "todo": "Two",
+                    "url": ""
+                },
+                {
+                    "todo": "Three",
+                    "url": ""
+                }
+            ]
+        },
+        {
+            "name": "wool_balls",
+            "icon": "sheep",
+            "tip": "Adding wool balls during drying clothes cuts down on drying time.",
+            "hint": "",
+            "Checklist": [
+                {
+                    "todo": "Buy wool balls.",
+                    "url": ""
+                },
+                {
+                    "todo": "Place in dryer during drying cycle.",
+                    "url": ""
+                },
+                {
+                    "todo": "Put back in bag after drying.",
+                    "url": ""
+                }
+            ]
+        }
+    ]
+}

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dashboard/dashboard.dart';
-import 'ToDos/ToDos.dart';
+import 'Activities/activities.dart';
 import 'leaderboard.dart';
 import 'contactus.dart';
 
@@ -17,7 +17,7 @@ class _BottomNavBarState extends State<BottomNavBarPage> {
   int _currentPage = 0;
   final List<Widget> _pages = [
     DashboardPage(),
-    ToDoPage(),
+    ActivitiesPage(),
     LeaderboardPage(),
     ContactUsPage()
   ];
