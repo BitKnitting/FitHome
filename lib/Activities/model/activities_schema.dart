@@ -3,10 +3,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'activities_schema.g.dart';
 
-
-
-
-
 @JsonSerializable()
 class Activities {
   Activities({
@@ -23,7 +19,12 @@ class Activities {
 
 @JsonSerializable()
 class Activity {
-  Activity({this.name, this.icon, this.tip, this.hint, this.checklist});
+  Activity(
+      {this.name,
+      this.icon,
+      this.tip,
+      this.hint,
+      this.checklist});
   final String name;
   final String icon;
   final String tip;

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'model/activities_schema.dart';
 import 'model/activities_Services.dart';
 import '../icons/icon_loader.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 class ActivitiesPage extends StatefulWidget {
   @override
@@ -51,7 +53,7 @@ class _State extends State<ActivitiesPage> {
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   // The active activities are available.
                   if (snapshot.connectionState == ConnectionState.done) {
-                    return _listViewActivities(snapshot.data);
+                    return _listViewActivities(true, snapshot.data);
                   } else {
                     return CircularProgressIndicator();
                   }
@@ -63,9 +65,9 @@ class _State extends State<ActivitiesPage> {
                 future: activities
                     .completedActivities("happyday.mjohnson@gmail.com"),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  // The active activities are available.
+                  // The completed activities are available.
                   if (snapshot.connectionState == ConnectionState.done) {
-                    return _listViewActivities(snapshot.data);
+                    return _listViewActivities(false, snapshot.data);
                   } else {
                     // Until the activities can be loaded show a circular progress indicator.
                     return CircularProgressIndicator();
@@ -77,34 +79,34 @@ class _State extends State<ActivitiesPage> {
     );
   }
 
-  Widget _listViewActivities(activities) {
-    return _makeBody(activities);
+  Widget _listViewActivities(bool active, List<Activity> activities) {
+    return _makeBody(active, activities);
   }
 
-  Widget _makeBody(List<Activity> activities) {
+  Widget _makeBody(bool active, List<Activity> activities) {
     return Container(
       child: ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         itemCount: activities.length,
         itemBuilder: (BuildContext context, int index) {
-          return _makeCard(activities[index]);
+          return _makeCard(active, activities[index]);
         },
       ),
     );
   }
 
-  Widget _makeCard(Activity activity) {
+  Widget _makeCard(bool active, Activity activity) {
     return Card(
       elevation: 8.0,
       margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
       child: Container(
-        child: _makeListTile(activity),
+        child: _makeListTile(active, activity),
       ),
     );
   }
 
-  Widget _makeListTile(Activity activity) {
+  Widget _makeListTile(bool active, Activity activity) {
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       leading: Container(
@@ -114,11 +116,27 @@ class _State extends State<ActivitiesPage> {
                 right: new BorderSide(
           width: 1.0,
         ))),
-        child: Icon(getIcon(name:activity.icon)),
+        child: Icon(getIcon(name: activity.icon)),
       ),
-      title: Text(
-        activity.name,
-        style: TextStyle(fontWeight: FontWeight.bold),
+      title: Row(
+        children: <Widget>[
+          Expanded(
+            child: Text(
+              activity.name,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          FlatButton(
+              // If active is true, the user can set to completed by tapping on button.
+              // Of course if completed, can tap on button to make the activity active again.
+              child: Text(active == true ? "Mark Completed" : "Mark Active"),
+              textColor: Colors.green,
+              splashColor: Colors.green,
+              shape: StadiumBorder(),
+              onPressed: () {
+                _updateActivityState(active);
+              }),
+        ],
       ),
       subtitle: Row(
         children: <Widget>[
@@ -134,5 +152,16 @@ class _State extends State<ActivitiesPage> {
       ),
       trailing: Icon(Icons.keyboard_arrow_right, size: 30.0),
     );
+  }
+
+  void _updateActivityState(bool active) async {
+    // Update the user's completedActivities list.
+    // if active == true, add to completedActivities.
+    // if active == false, remove from completed Activities.
+    // The update gets written back into the User's json file.
+    print('tap state: $active');
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    String appDocPath = appDocDir.path;
+    print(appDocPath);
   }
 }

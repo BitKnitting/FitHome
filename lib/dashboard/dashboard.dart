@@ -28,6 +28,10 @@ class _DashboardPageState extends State<DashboardPage> {
         Column(
           children: <Widget>[
             //////
+            Column(children: <Widget>[
+              Text("happyday.mjohnson@gmail.com."),
+              FlatButton(child: Text("Not you?")),
+            ]),
             Expanded(
               child: _impactImage(_impactImages),
             ),
