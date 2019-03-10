@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dashboard/dashboard.dart';
-import 'Activities/activities.dart';
+import 'Activities/activities_page.dart';
 import 'leaderboard.dart';
 import 'contactus.dart';
 

@@ -1,7 +1,7 @@
 {
     "activities": [
         {
-            "name": "power_strip",
+            "name": "Power Strips",
             "icon": "power",
             "tip": "Many devices are always on, but used for only a few hours.  Put them on programmable power supplies.",
             "hint": "For example, your TV, DVD, cable box are most likely used during the same hours and are located close together",
@@ -21,7 +21,7 @@
             ]
         },
         {
-            "name": "audit",
+            "name": "Energy Audit",
             "icon": "clipboard",
             "tip": "A home energy audit will give you A LOT of info on saving energy as well as free LED lightbulbs if needed!",
             "hint": "",
@@ -41,7 +41,7 @@
             ]
         },
         {
-            "name": "wool_balls",
+            "name": "Wool Balls",
             "icon": "sheep",
             "tip": "Adding wool balls during drying clothes cuts down on drying time.",
             "hint": "",
