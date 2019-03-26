@@ -3,8 +3,7 @@
         {
             "name": "Power Strips",
             "icon": "power",
-            "tip": "Many devices are always on, but used for only a few hours.  Put them on programmable power supplies.",
-            "hint": "For example, your TV, DVD, cable box are most likely used during the same hours and are located close together",
+            "tip": "Did you know on average we waste 23% of our electricity on devices that are always on?  WHOA!  These devices are always on but used for only a few hours.  Put them on programmable power supplies.  For example, your TV, DVD, cable box are most likely used during the same hours and are located close together.",
             "checklist": [
                 {
                     "todo": "Look for places that have a collection of always on devices plugged in. ",
@@ -12,7 +11,7 @@
                 },
                 {
                     "todo": "Buy programmable Power Strips.",
-                    "url": ""
+                    "url": "https://amzn.to/2T0Gumz"
                 },
                 {
                     "todo": "START SAVING: Program the power strips, plug the devices into it, plug the power strip into the wall plug and start saving!",
@@ -23,19 +22,14 @@
         {
             "name": "Energy Audit",
             "icon": "clipboard",
-            "tip": "A home energy audit will give you A LOT of info on saving energy as well as free LED lightbulbs if needed!",
-            "hint": "",
-            "Checklist": [
+            "tip": "A home energy audit is one of the most important activities.  It will give you A LOT of info on saving energy as well as free LED lightbulbs if needed!  You set up an appointment for a home energy specialist to visit you home and determine how you can be more energy efficient",
+            "checklist": [
                 {
-                    "todo": "One",
-                    "url": ""
+                    "todo": "Sign up for a Home Energy Assessment",
+                    "url": "https://www.pse.com/rebates/home-energy-assessment"
                 },
                 {
-                    "todo": "Two",
-                    "url": ""
-                },
-                {
-                    "todo": "Three",
+                    "todo": "Implement the energy savings activities you learned from the Energy Assessment",
                     "url": ""
                 }
             ]
@@ -43,12 +37,11 @@
         {
             "name": "Wool Balls",
             "icon": "sheep",
-            "tip": "Adding wool balls during drying clothes cuts down on drying time.",
-            "hint": "",
-            "Checklist": [
+            "tip": "According to the EIA, dryers use 5% of our electricity.  When we added wool balls during drying our clothes, our drying time was cut in 1/2!",
+            "checklist": [
                 {
                     "todo": "Buy wool balls.",
-                    "url": ""
+                    "url": "https://amzn.to/2XUBVOd"
                 },
                 {
                     "todo": "Place in dryer during drying cycle.",
