@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'bottom_navbarpage.dart';
 import 'login/login.dart';
-
 //
 // When launching, the FitHome app first checks if the user has their "authentication" info
 // which right now is their email, completedActivities (and eventually their machine ids),

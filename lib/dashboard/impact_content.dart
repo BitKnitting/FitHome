@@ -19,10 +19,6 @@ Widget impactContent(String currentImageURL) {
       _electricitySaved(10),
       // TODO: figuring out and passing the impact amount.
       _impactEquivalent(54,currentImageURL),
-      // TODO: Figure out from datastore what
-      // ranking user is at for different leaderboard
-      // lists.
-      _leaderboardRanking(),
     ],
   );
 }
@@ -77,45 +73,4 @@ Widget impactContent(String currentImageURL) {
     );
   }
 
-  Widget _leaderboardRanking() {
-    return SizedBox(
-      width: 100.0,
-      height: 80.0,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Text(
-            'Rank',
-            style: TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          Text(
-            'Local: 55',
-            style: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            'State: 103',
-            style: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            'Overall: 230',
-            style: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
+  

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dashboard/dashboard.dart';
 import 'Activities/activities_page.dart';
-import 'leaderboard.dart';
 import 'contactus.dart';
 
 class BottomNavBarPage extends StatefulWidget {
@@ -18,7 +17,6 @@ class _BottomNavBarState extends State<BottomNavBarPage> {
   final List<Widget> _pages = [
     DashboardPage(),
     ActivitiesPage(),
-    LeaderboardPage(),
     ContactUsPage()
   ];
 
@@ -43,10 +41,6 @@ class _BottomNavBarState extends State<BottomNavBarPage> {
           BottomNavigationBarItem(
             icon: new Icon(Icons.star),
             title: new Text('To Dos'),
-          ),
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.format_align_justify),
-            title: new Text('Leaderboard'),
           ),
           BottomNavigationBarItem(
             icon: new Icon(Icons.mail),
