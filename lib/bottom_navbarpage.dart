@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dashboard/dashboard.dart';
 import 'Activities/activities_page.dart';
-import 'contactus.dart';
+import 'contact/contact_page.dart';
 
 class BottomNavBarPage extends StatefulWidget {
   BottomNavBarPage({this.title});
@@ -17,7 +17,7 @@ class _BottomNavBarState extends State<BottomNavBarPage> {
   final List<Widget> _pages = [
     DashboardPage(),
     ActivitiesPage(),
-    ContactUsPage()
+    ContactPage()
   ];
 
   @override

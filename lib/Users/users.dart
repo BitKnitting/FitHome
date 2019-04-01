@@ -3,6 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'users.g.dart';
 
+//TODO: Clean out if not using.
 Future<String> loadUsers() async {
   return await rootBundle.loadString('assets/users.json');
 }

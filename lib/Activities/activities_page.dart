@@ -11,11 +11,6 @@ class ActivitiesPage extends StatefulWidget {
 
 class _State extends State<ActivitiesPage> {
   @override
-  initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
