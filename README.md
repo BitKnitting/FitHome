@@ -1,5 +1,7 @@
 
-
+# Code Sections 
+* [Member Verification](README_additions/member_verification.md)  
+* [Logging](README_additions/logging.md)
 
 # Glossary
 ## Baseline
