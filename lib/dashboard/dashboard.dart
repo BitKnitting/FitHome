@@ -1,3 +1,5 @@
+import 'package:fithome/Members/member.dart';
+import 'package:fithome/State_Management/state_container.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'energy_plot.dart';
@@ -22,34 +24,50 @@ class _DashboardPageState extends State<DashboardPage> {
   String currentImage;
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        ////////
-        Column(
+    Member member = StateContainer.of(context).member;
+
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(
           children: <Widget>[
-            //////
-            Column(children: <Widget>[
-              Text("happyday.mjohnson@gmail.com."),
-              FlatButton(child: Text("Not you?")),
-            ]),
-            Expanded(
-              child: _impactImage(_impactImages),
+            ////////
+            Column(
+              children: <Widget>[
+                //////
+                Column(children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: FutureBuilder(
+                        future: member.email,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Text(snapshot.data);
+                          } else if (snapshot.hasError) {
+                            return Text('${snapshot.error}');
+                          }
+                        }),
+                  ),
+                ]),
+                Expanded(
+                  child: _impactImage(_impactImages),
+                ),
+                //////
+                _electricityPlot(),
+              ],
             ),
-            //////
-            _electricityPlot(),
+            /////////
+            Positioned(
+              child: _frostedCard(
+                  impactContent(currentImage),
+                  MediaQuery.of(context).size.height / 7,
+                  35 + MediaQuery.of(context).size.height / 7,
+                  .6),
+            ),
+            ////////
+            _floatingActionButton(),
           ],
         ),
-        /////////
-        Positioned(
-          child: _frostedCard(
-              impactContent(currentImage),
-              MediaQuery.of(context).size.height / 7,
-              35 + MediaQuery.of(context).size.height / 7,
-              .6),
-        ),
-        ////////
-        _floatingActionButton(),
-      ],
+      ),
     );
   }
 
