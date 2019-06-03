@@ -8,4 +8,4 @@ Note the app __must__ verify the person in Firebase.  This means the device __mu
 # Design Pattern
 The design follows:  
 * [Andreas Bizotto's recommendation for a root page (for routing)](https://youtu.be/Pl1rKBnmDkU).  
-* [Andreas Bizotto's advice on state management using an inherited widget](https://youtu.be/Pl1rKBnmDkU)
+* [Andreas Bizotto's advice on passing user/member info using an inherited widget](https://youtu.be/Pl1rKBnmDkU)

@@ -1,9 +1,9 @@
 import 'package:fithome/Members/member_verification_page.dart';
 import 'package:fithome/State_Management/state_container.dart';
-import 'package:fithome/dashboard/dashboard.dart';
+
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-
+import 'package:fithome/main_page.dart';
 import 'Members/member.dart';
 
 enum AuthStatus { unknown, notSignedIn, signedIn }
@@ -39,7 +39,7 @@ class _RootPageState extends State<RootPage> {
       case AuthStatus.notSignedIn:
         return MemberVerificationPage();
       case AuthStatus.signedIn:
-        return DashboardPage();
+        return MainPage();
     }
     return null;
   }

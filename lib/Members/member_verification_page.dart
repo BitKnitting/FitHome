@@ -11,8 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:email_validator/email_validator.dart';
 
-import '../globals.dart';
-
 class MemberVerificationPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _MemberVerificationState();

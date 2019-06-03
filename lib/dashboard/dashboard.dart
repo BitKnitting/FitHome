@@ -36,7 +36,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 //////
                 Column(children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
+                    padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
                     child: FutureBuilder(
                         future: member.email,
                         builder: (context, snapshot) {
@@ -44,6 +44,8 @@ class _DashboardPageState extends State<DashboardPage> {
                             return Text(snapshot.data);
                           } else if (snapshot.hasError) {
                             return Text('${snapshot.error}');
+                          } else {
+                            return Text('TBD');
                           }
                         }),
                   ),
@@ -169,9 +171,16 @@ class _DashboardPageState extends State<DashboardPage> {
       'assets/impactImages/tree_1.jpeg',
       'assets/impactImages/tree_2.jpeg',
       'assets/impactImages/tree_3.jpeg',
-      'assets/impactImages/money_1.jpeg',
-      'assets/impactImages/money_2.jpeg',
-      'assets/impactImages/money_3.jpeg',
+      'assets/impactImages/414x736/money_1.jpeg',
+      'assets/impactImages/414x736/money_2.jpeg',
+      'assets/impactImages/414x736/money_3.jpeg',
+      'assets/impactImages/414x736/money_4.jpeg',
+      'assets/impactImages/414x736/money_5.jpeg',
+      'assets/impactImages/414x736/money_6.jpeg',
+      'assets/impactImages/414x736/money_7.jpeg',
+      'assets/impactImages/414x736/money_8.jpeg',
+      'assets/impactImages/414x736/money_9.jpeg',
+      'assets/impactImages/414x736/money_10.jpeg',
     ];
 
     return _impactImages;

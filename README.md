@@ -1,7 +1,8 @@
 
 # Code Sections 
 * [Member Verification](README_additions/member_verification.md)  
-* [Logging](README_additions/logging.md)
+* [Logging](README_additions/logging.md)  
+* [Getting readings into the app](README_additions/readings.md)
 
 # Glossary
 ## Baseline

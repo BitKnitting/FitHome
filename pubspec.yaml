@@ -67,9 +67,16 @@ flutter:
     - assets/impactImages/tree_1.jpeg
     - assets/impactImages/tree_2.jpeg
     - assets/impactImages/tree_3.jpeg
-    - assets/impactImages/money_1.jpeg
-    - assets/impactImages/money_2.jpeg
-    - assets/impactImages/money_3.jpeg
+    - assets/impactImages/414x736/money_1.jpeg
+    - assets/impactImages/414x736/money_2.jpeg
+    - assets/impactImages/414x736/money_3.jpeg
+    - assets/impactImages/414x736/money_4.jpeg
+    - assets/impactImages/414x736/money_5.jpeg
+    - assets/impactImages/414x736/money_6.jpeg
+    - assets/impactImages/414x736/money_7.jpeg
+    - assets/impactImages/414x736/money_8.jpeg
+    - assets/impactImages/414x736/money_9.jpeg
+    - assets/impactImages/414x736/money_10.jpeg
     - assets/activities.json
     - assets/users.json
     - assets/comments.json
